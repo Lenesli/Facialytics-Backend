@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Emotion Detection</title>
+    <style>
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Emotion Detection</h1>
+
+    <!-- Upload Image Form -->
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="fileInput" name="file" accept="image/*" >
+        <button type="submit">Upload Image</button>
+    </form>
+
+    <!-- Result Display -->
+    <div id="result">
+        <p id="emotionResult"></p>
+    </div>
+
+    <!-- Live Feed Link -->
+    <a href="{{ url_for('video_feed') }}">Live Feed</a>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            
+            let formData = new FormData(this);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('emotionResult').innerText = `Error: ${data.error}`;
+                } else {
+                    document.getElementById('emotionResult').innerText = `Detected Emotion: ${data.emotion} (${data.probability.toFixed(2)}%)`;
+                }
+            })
+            .catch(error => {
+                document.getElementById('emotionResult').innerText = `Error: ${error}`;
+            });
+        });
+    </script>
+</body>
+</html>
