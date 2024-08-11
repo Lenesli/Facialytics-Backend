@@ -40,7 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'emotion_app',
     'channels',#handles WebSockets , allowing realtime communication between the client and the serve 
+    'corsheaders', #Cross-Origin Resource Sharing
+
+    
+
 ]
+
 ASGI_APPLICATION='EmotionDetection.asgi.application'
 CHANNEL_LAYERS = {
     'default': {
@@ -50,14 +55,18 @@ CHANNEL_LAYERS = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+CORS_ALLOW_ALL_ORIGINS = True # you can allow all origins to access your API
 
-ROOT_URLCONF = 'EmotionDetection.urls'
+
+ROOT_URLCONF = 'EmotionDetection.urls' 
 
 TEMPLATES = [
     {
